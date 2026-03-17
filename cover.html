@@ -120,6 +120,56 @@
 
   .top-right td:last-child {text-align:left;padding-right:2mm;}
 
+  /* Radio button toggle styling */
+  .toggle-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+
+  .toggle-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .toggle-group input[type="radio"] {
+    margin: 0;
+    width: auto;
+  }
+
+  /* Optional fields section styling */
+  .optional-section {
+    background: #e8f5e9;
+    border-left: 4px solid #00e676;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 4px;
+  }
+
+  .optional-section h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .optional-section label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+    font-size: 14px;
+  }
+
+  .optional-section input[type="checkbox"] {
+    margin: 0;
+    width: auto;
+    cursor: pointer;
+  }
+
   /* Mobile / small screens: flow layout so preview is readable and interactive */
   @media (max-width: 768px) {
     .page {width: 100%;height: auto;transform: none;margin: 0 auto 12px;padding: 8px 0;}
@@ -180,13 +230,38 @@
   </div>
 
   <div class="form" id="form">
-    <label>Experiment No</label><input id="expNo" type="text">
+    <label>Select Label</label>
+    <div class="toggle-group">
+      <label>
+        <input type="radio" name="labelType" value="experiment" checked>
+        Experiment No
+      </label>
+      <label>
+        <input type="radio" name="labelType" value="practical">
+        Practical No
+      </label>
+    </div>
+    
+    <label>Number</label><input id="expNo" type="text">
     <label>Subject name</label><textarea id="subject"></textarea>
     <label>Subject code</label><input id="subjectCode" type="text">
     <label>Experiment title (main center)</label><input id="expTitle" type="text">
     <label>Instructed by</label><input id="instructor" type="text">
     <label>Group</label><input id="group" type="text">
     <label>Group members (one per line)</label><textarea id="members"></textarea>
+    
+    <div class="optional-section">
+      <h3>Optional Fields - Bottom Right</h3>
+      <label>
+        <input type="checkbox" id="toggle-name" checked>
+        Show NAME
+      </label>
+      <label>
+        <input type="checkbox" id="toggle-reg-no" checked>
+        Show REG NO
+      </label>
+    </div>
+    
     <label>Name</label><textarea id="name"></textarea>
     <label>Reg No</label><input id="regNo" type="text">
     <label>Course</label>
@@ -286,10 +361,17 @@ function setCenterTitle(raw) {
 
 function formatDateDDMMYYYY(iso){ if(!iso) return ''; const [y,m,d] = iso.split('-'); return `${d}/${m}/${y}`; }
 
+function getLabelText() {
+  const selectedLabel = document.querySelector('input[name="labelType"]:checked').value;
+  return selectedLabel === 'experiment' ? 'Experiment NO' : 'Practical NO';
+}
+
 function updatePreview(){
+  const labelText = getLabelText();
+  
   el('topRightBlock').innerHTML =
     `<table>
-      <tr><td>Experiment NO: ${el('expNo').value}</td></tr>
+      <tr><td>${labelText}: ${el('expNo').value}</td></tr>
       <tr><td>${el('subject').value}</td></tr>
       <tr><td>${el('subjectCode').value}</td></tr>
     </table>`;
@@ -305,20 +387,40 @@ function updatePreview(){
       ${members}
     </table>`;
 
-  el('bottomRightBlock').innerHTML =
-    `<table>
-      <tr><td>NAME</td><td>: ${el('name').value}</td></tr>
-      <tr><td>REG NO</td><td>: ${el('regNo').value}</td></tr>
-      <tr><td>COURSE</td><td>: ${el('course').value}</td></tr>
-      <tr><td>DATE OF INS</td><td>: ${formatDateDDMMYYYY(el('dateIns').value)}</td></tr>
-      <tr><td>DATE OF SUB</td><td>: ${formatDateDDMMYYYY(el('dateSub').value)}</td></tr>
-    </table>`;
+  // Build bottom-right table with optional fields
+  let bottomRightHTML = '<table>';
+  
+  if (el('toggle-name').checked) {
+    bottomRightHTML += `<tr><td>NAME</td><td>: ${el('name').value}</td></tr>`;
+  }
+  
+  if (el('toggle-reg-no').checked) {
+    bottomRightHTML += `<tr><td>REG NO</td><td>: ${el('regNo').value}</td></tr>`;
+  }
+  
+  bottomRightHTML += `
+    <tr><td>COURSE</td><td>: ${el('course').value}</td></tr>
+    <tr><td>DATE OF INS</td><td>: ${formatDateDDMMYYYY(el('dateIns').value)}</td></tr>
+    <tr><td>DATE OF SUB</td><td>: ${formatDateDDMMYYYY(el('dateSub').value)}</td></tr>
+  </table>`;
+  
+  el('bottomRightBlock').innerHTML = bottomRightHTML;
 }
 
 // Live preview handlers
 document.querySelectorAll('#form input, #form textarea, #form select').forEach(inp => {
   ['input','change','keyup'].forEach(ev => inp.addEventListener(ev, updatePreview));
 });
+
+// Add listener for radio button changes
+document.querySelectorAll('input[name="labelType"]').forEach(radio => {
+  radio.addEventListener('change', updatePreview);
+});
+
+// Add listeners for optional checkboxes
+document.getElementById('toggle-name').addEventListener('change', updatePreview);
+document.getElementById('toggle-reg-no').addEventListener('change', updatePreview);
+
 updatePreview();
 
 // Re-render line wrapping on resize
