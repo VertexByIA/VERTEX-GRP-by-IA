@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vertex Group</title>
+<style>
+  /* ===== Global Styles ===== */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+  }
+  a { text-decoration: none; }
+
+  /* ===== Header ===== */
+  header {
+    background-color: #111;
+    text-align: center;
+    padding: 30px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  header img {
+    height: 400px;
+    border-radius: 15px;
+    vertical-align: middle;
+  }
+  header h1 {
+    display:inline-flexbox;
+    font-size: 6rem;
+    color: #3e8f70;
+    margin-left: 50px;
+    vertical-align:auto;
+  }
+
+  /* ===== Main Sections ===== */
+  main { max-width: 1200px; margin: auto; padding: 40px 20px; }
+  .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 40px; color: #00c6ff; }
+
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .card {
+    background: #08012ef2;
+    border-radius: 15px;
+    width: 350px;
+    padding: 25px;
+    box-shadow: 0 0 20px #00c6ff33;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+  }
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00c6ff88;
+  }
+  .card img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+  }
+  .card h2 { margin-bottom: 15px; color: #00ff9f; }
+  .card p { font-size: 14px; color: #aaa; min-height: 50px; }
+  .btn-big {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 25px;
+    background: #00c6ff;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    transition: background 0.3s;
+  }
+  .btn-big:hover { background: #0095cc; }
+
+  /* ===== Footer ===== */
+  footer {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .cards-container { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <img src="images/main.jpeg" alt="Vertex Group Logo">
+ 
+  <h1>  VERTEX GROUP</h1>
+  <p>The Future Today...</p>
+</header>
+
+<!-- Main Content -->
+<main>
+  <div class="section-title">Our Divisions</div>
+
+  <div class="cards-container">
+    <!-- Vertex Alpha Card -->
+    <div class="card">
+      <img src="images/imglogo.jpeg" alt="Vertex Alpha Logo">
+      <h2>🔧 Vertex Alpha</h2>
+      <p>Engineering Designs & Innovations. Explore IoT, electronics, and mechanical projects developed with creativity and precision.</p>
+      <a href="alpha.html" class="btn-big">Explore Alpha</a>
+    </div>
+
+    <!-- Vertex Beta Card -->
+    <div class="card">
+      <img src="images/betalogo.jpeg" alt="Vertex Beta Logo">
+      <h2>💻 Vertex Beta</h2>
+      <p>IT & Software Innovations. Discover web development, AI tools, and digital solutions including our HNDE Cover Page Generator.</p>
+      <a href="beta.html" class="btn-big">Explore Beta</a>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  &copy; 2026 Vertex Group. All Rights Reserved.
+</footer>
+
+</body>
+</html>

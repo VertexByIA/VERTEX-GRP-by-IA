@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERTEX ALPHA- Engineering Designers</title>
+    <style>
+        /* Reset & body */
+        * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; scroll-behavior: smooth;}
+        body { background-color: #3e0404; color: #fff; line-height: 1.6;}
+        a { text-decoration: none; color: #00ff9f; }
+
+        /* Header */
+        header { position:relative; width: 100%; top:0; left:0; background-color: #0c023fdf; padding: 15px 0; text-align: center; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.5);}
+        header img { height: 400px; vertical-align: middle; }
+        header h1 { display:inline-block; font-size: 4rem; color: #00ff9f; margin-left:10px; vertical-align: middle; }
+        nav { margin-top: 10px; }
+        nav a { margin: 0 15px; font-weight: bold; color: #fff; transition: 0.3s;}
+        nav a:hover { color: #00ff9f; }
+
+        /* Hero section */
+        .hero { display: flex; flex-direction: column; justify-content:center; align-items:center; height: 50vh; background: linear-gradient(135deg,#0a0a0a,#111); text-align:center; padding: 0 20px;}
+        .hero h2 { font-size: 2.5rem; margin-bottom: 20px; color: #0062ff; animation: fadeInDown 1.5s ease forwards; }
+        .hero p { max-width: 500px; margin-bottom: 30px; color:#ccc; animation: fadeInUp 1.5s ease forwards; }
+        @keyframes fadeInDown { 0% {opacity:0; transform: translateY(-50px);} 100% {opacity:1; transform: translateY(0);} }
+        @keyframes fadeInUp { 0% {opacity:0; transform: translateY(50px);} 100% {opacity:1; transform: translateY(0);} }
+
+        .btn { padding: 12px 30px; background-color: #00ff9f; color: #111; border:none; border-radius:5px; font-weight:bold; cursor:pointer; transition:0.3s;}
+        .btn:hover { background-color: #00cc7a; }
+
+        .contact-btns { margin-top: 20px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; animation: fadeIn 2s ease forwards; }
+        .contact-btns a { padding: 12px 25px; background-color: #ff9900; color: #111; font-weight:bold; border-radius:5px; transition:0.3s; }
+        .contact-btns a:hover { background-color: #cc7a00; }
+        @keyframes fadeIn { 0% {opacity:0;} 100% {opacity:1;} }
+
+        /* Services */
+        .services { padding: 100px 20px 50px 20px; background-color: #111; text-align:center;}
+        .services h2 { margin-bottom: 30px; color: #00ffb3; font-size:2rem; }
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:20px; }
+        .service { background-color: #222; padding:20px; border-radius:10px; transition:0.3s; transform: translateY(0);}
+        .service:hover { background-color: #00ff9f; color: #111; transform: translateY(-10px); }
+        .service h3 { margin-bottom:10px; }
+
+        /* Team */
+        .team { padding:100px 20px; text-align:center;}
+        .team h2 { color:#00ff9f; margin-bottom:30px; font-size:2rem;}
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:20px; }
+        .member { background-color:#222; padding:20px; border-radius:10px; transition: transform 0.3s; }
+        .member:hover { transform: scale(1.05);}
+        .member img { width:100%; border-radius:50%; margin-bottom:10px; }
+        .member h3 { margin-bottom:5px; }
+        .member p { font-size:0.9rem; color:#ccc; }
+
+        #intro-video {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 50px 0;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+        /* Footer */
+        footer { background-color: #111; text-align:center; padding:20px; color:#888; }
+
+        /* Smooth scroll offset for fixed header */
+        section { scroll-margin-top: 100px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="images/imglogo.jpeg" alt="Vertex Alpha Logo"><br>
+        <h1>VERTEX ALPHA</h1>
+<p>Engineering Designers</p>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#team">Team</a>
+            <a href="#contact">Contact</a></br>
+
+ 	 <a href="index.html" >⬅ Back to Main Page</a> |
+ 	 <a href="beta.html" >💻 Go to Vertex Beta</a>
+
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h2>Engineering Ideas. Building Solutions.</h2>
+        <p>We specialize in smart agriculture systems, robotics, IoT solutions, and student engineering projects.</p>
+        <div class="contact-btns">
+            <a href="https://wa.me/94776128700" target="_blank">Contact via WhatsApp</a>
+            <a href="https://blynk.cloud/dashboard-link" target="_blank">View IoT Dashboard</a>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2>Our Services</h2>
+        <div class="service-grid">
+            <div class="service">
+                <h3>Smart Irrigation Systems</h3>
+                <p>Automated water-efficient solutions for farms using IoT and sensors.</p>
+            </div>
+            <div class="service">
+                <h3>Robotics Projects</h3>
+                <p>Robotics solutions for education, research, and industrial automation.</p>
+            </div>
+            <div class="service">
+                <h3>IoT Monitoring</h3>
+                <p>Environmental and agricultural monitoring using IoT and ESP32 devices.</p>
+            </div>
+            <div class="service">
+                <h3>Student Projects</h3>
+                <p>Final year and college projects with complete design, code, and documentation.</p>
+            </div>
+        </div>
+    </section>
+<section id="intro-video">
+  <video width="100%" autoplay muted loop>
+    <source src="video/intro.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+</section>
+    <section class="team" id="team">
+        <h2>Our Team</h2>
+        <div class="team-grid">
+            <div class="member">
+                <img src="https://via.placeholder.com/200" alt="CEO">
+                <h3>CEO & Technical Director</h3>
+                <p> System Design & Technical Projects -I.A.Jayasekara    
+
+		HNDE (Electronics & Telecommunication Engineering undergraduate)
+		</p>
+            </div>
+            <div class="member">
+                <img src="https://via.placeholder.com/200" alt="Managing Director">
+                <h3>Managing Director</h3>
+                <p>Finance & Project Management-K.V.D.Tharangani
+HNDE (Electrical & Power Engineering undergraduate)
+</p>
+            </div>
+            <div class="member">
+                <img src="https://via.placeholder.com/200" alt="Marketing Team">
+                <h3>Marketing & Promotion Managers
+</h3>
+                <p>Client relations & social media <br>
+A.N.K.Perera -HNDE (Electronics & Telecommunication Engineering undergraduate)<br>
+M.A.K.L.Dissanayake -HNDE (Electronics & Telecommunication Engineering undergraduate)<br>
+K.G.Heenatigala - HNDE (Electrical & Power Engineering undergraduate)
+</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <p>Contact us: info@vertexalpha.com | +94 77 61 28 700</p>
+        <p>&copy; 2026 Vertex Alpha. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

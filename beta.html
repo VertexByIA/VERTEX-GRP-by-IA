@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vertex Beta - Digital Tools</title>
+<style>
+  /* ===== Global Styles ===== */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+  }
+  a { text-decoration: none; }
+
+  /* ===== Header ===== */
+  header {
+    position: relative;
+    width: 100%;
+    background-color: #42011ddf;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  }
+  header img {
+    height: 400px;
+    vertical-align: middle;
+    border-radius: 20px;
+  }
+  header h1 {
+    display: inline-block;
+    font-size: 3rem;
+    color: #00ff9f;
+    margin-left: 15px;
+    vertical-align: middle;
+  }
+
+  /* ===== Navigation ===== */
+  nav {
+    margin-top: 10px;
+  }
+  nav a {
+    margin: 0 20px;
+    font-weight: bold;
+    color: #fff;
+    transition: 0.3s;
+  }
+  nav a:hover { color: #00ff9f; }
+
+  /* ===== Main Section ===== */
+  main { padding: 30px 20px; max-width: 1000px; margin: auto; }
+
+  h2 { font-size: 2rem; margin-bottom: 20px; }
+
+  /* ===== Tool Cards ===== */
+  .tool-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+  .tool-card {
+    background: #010119d3;
+    border-radius: 15px;
+    padding: 25px;
+    width: 300px;
+    box-shadow: 0 0 20px #00c6ff33;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+  }
+  .tool-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00c6ff88;
+  }
+  .tool-card img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+  }
+  .tool-card h3 { margin-bottom: 10px; }
+  .tool-card p {
+    font-size: 14px;
+    color: #c0b1b1;
+    min-height: 50px;
+  }
+  .btn-big {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 25px;
+    background: #00c6ff;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    transition: background 0.3s;
+  }
+  .btn-big:hover { background: #0095cc; }
+
+  /* ===== Footer ===== */
+  footer {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .tool-cards { flex-direction: column; align-items: center; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <img src="images/betalogo.jpeg" alt="Vertex Beta Logo"></br>
+  <h1>💻 VERTEX BETA</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="alpha.html">Vertex Alpha</a>
+    <a href="beta.html">Digital Tools</a>
+  </nav>
+</header>
+
+<!-- Main Content -->
+<main>
+  <h2>IT & Software Innovations</h2>
+
+  <!-- Tool Cards Section -->
+  <div class="tool-cards">
+    <!-- Cover Page Generator Card -->
+    <div class="tool-card">
+      <img src="images/cover_icon.png" alt="Cover Page Generator">
+      <h3>📄 HNDE Cover Page Generator</h3>
+      <p>Create professional cover pages for HNDE projects easily with your details. Fast and user-friendly!</p>
+      <a href="cover.html" class="btn-big">Open Generator</a>
+    </div>
+
+    <!-- Future Tool Card Example -->
+    <div class="tool-card">
+      <img src="images/tool2_icon.png" alt="AI Tool">
+      <h3>🤖 AI Tool Example</h3>
+      <p>Coming soon...</p>
+      <a href="#" class="btn-big">Open Tool</a>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  &copy; 2026 Vertex Group. All Rights Reserved.
+</footer>
+
+</body>
+</html>

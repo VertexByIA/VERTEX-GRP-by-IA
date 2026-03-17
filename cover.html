@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cover Page Generator</title>
+<style>
+  /* Prevent mobile browsers from auto-resizing text (can break measurements) */
+  html, body {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    height: 100%;
+    margin: 0;
+    font-family:'Times New Roman', Times, serif;
+    background: #4fc3f7;
+    text-transform: uppercase;
+  }
+
+  .app {max-width: 980px;margin: 8px auto;padding: 8px;}
+
+  /* Desktop: render as A4 box for PDF and print */
+  .page {
+    width: 210mm;
+    height: 297mm;
+    background: white;
+    box-sizing: border-box;
+    margin: auto;
+    position: relative;
+    overflow-wrap: break-word;
+    font-family: 'Times New Roman', Times, serif;
+    border: 1px solid #000;
+  }
+
+  .page-inner {
+    position: absolute;
+    left: 25mm;
+    top: 10mm;
+    right: 10mm;
+    bottom: 10mm;
+    border: 1px solid #000;
+    padding: 4mm;
+    box-sizing: border-box;
+  }
+
+  /* Blocks positioned inside page-inner
+     SHIFTED slightly to the RIGHT relative to center: left:52.5% (5% closer to center from previous 55%).
+     max-width increased to 60% as requested.
+  */
+  .top-right, .bottom-right {
+    position: absolute;
+    left: 50%;
+    text-align: left;
+    white-space: pre-line;
+    transform: none;
+    max-width: 60%;
+  }
+
+  .top-right {top: 5mm;font-size: 25px;line-height: 1.3;padding-bottom: 2mm;}
+  .bottom-right {bottom: 5mm;font-size: 15px;line-height: 1.2;}
+
+  /*
+    Center title rendering:
+    - Every visual line is wrapped in .line elements and receives a border-bottom + padding-bottom
+    - This produces per-line underlines that match visual line lengths and export reliably to PDF.
+  */
+  .center-title {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    top: calc(10mm + 90mm);
+    font-size: 39px;
+    text-align: center;
+    line-height: 1.4;
+    padding: 0 5mm;
+    display: block;
+    width: auto;
+    white-space: normal;
+    box-sizing: border-box;
+  }
+
+  .center-title .line {
+    display: inline-block;            /* shrink to the line width */
+    border-bottom: 3px solid #000;    /* underline thickness (desktop) */
+    padding-bottom: 8px;              /* offset between text and underline */
+    box-sizing: border-box;
+    white-space: normal;
+    margin-right: .2em;
+  }
+
+  .center-title .word {
+    display: inline-block;
+    margin-right: .25em;
+  }
+
+  .middle-left {
+    position: absolute;
+    left: 5mm;
+    top: calc(10mm + 120mm);
+    font-size: 15px;
+    line-height: 1.2;
+    white-space: pre-line;
+  }
+
+  .form {
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 10px 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  .form label {font-size: 14px;display:block;margin-top:8px;}
+
+  .form input[type="text"], .form textarea, .form select, .form input[type="date"] {
+    width:100%;padding:8px;box-sizing:border-box;font-family: 'Times New Roman', Times, serif;
+    text-transform:uppercase;margin-top:6px;font-size:14px;
+  }
+
+  .btn{display:block;width:100%;padding:12px;margin-top:10px;background:#00e676;color:#222;border-radius:8px;font-size:16px;cursor:pointer;text-align:center;}
+
+  .top-right td:last-child {text-align:left;padding-right:2mm;}
+
+  /* Mobile / small screens: flow layout so preview is readable and interactive */
+  @media (max-width: 768px) {
+    .page {width: 100%;height: auto;transform: none;margin: 0 auto 12px;padding: 8px 0;}
+    .page-inner {position: relative;left: auto;top: auto;right: auto;bottom: auto;margin: 8px;padding: 10px;border: 1px solid #000;box-sizing: border-box;}
+    /* On mobile we revert top/bottom-right to normal flow and center them for readability */
+    .top-right {position: relative;left: auto;transform: none;text-align: center;border-bottom: 2px solid #000;padding-bottom: 6px;font-size: 18px;margin-bottom: 8px;max-width: none;}
+    .center-title {position: relative;left: auto;transform: none;top: auto;margin: 12px auto;font-size: 26px;padding: 0 6mm;display: block;}
+    .center-title .line {border-bottom-width: 2px;padding-bottom: 6px;}
+    .middle-left {position: relative;left: auto;top: auto;margin-top: 12px;font-size: 15px;white-space: pre-line;}
+    .bottom-right {position: relative;left: auto;transform: none;text-align: center;margin-top: 10px;font-size: 14px;bottom: auto;max-width: none;}
+  }
+
+  /*
+    PDF export overrides — ensure the new left:52.5% position and max-width:60% are applied during export as well
+  */
+  body.pdf-export .page {
+    width: 210mm !important;
+    height: 297mm !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+  body.pdf-export .page-inner {
+    position: absolute !important;
+    left: 25mm !important;
+    top: 10mm !important;
+    right: 10mm !important;
+    bottom: 10mm !important;
+  }
+  body.pdf-export .top-right,
+  body.pdf-export .bottom-right {
+    left: 50% !important;
+    transform: none !important;
+    max-width: 60% !important;
+  }
+  /* Force center-title desktop sizing during export */
+  body.pdf-export .center-title {
+    font-size: 39px !important;
+    top: calc(10mm + 90mm) !important;
+    padding: 0 5mm !important;
+  }
+  body.pdf-export .center-title .line {
+    border-bottom: 3px solid #000 !important;
+    padding-bottom: 8px !important;
+    display: inline-block !important;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <h2>Cover Page Generator</h2>
+  <div class="page" id="pagePreview">
+    <div class="page-inner" id="pageInner">
+      <div class="top-right" id="topRightBlock"></div>
+      <div class="center-title" id="centerTitle" aria-live="polite" data-raw=""></div>
+      <div class="middle-left" id="middleLeftBlock"></div>
+      <div class="bottom-right" id="bottomRightBlock"></div>
+    </div>
+  </div>
+
+  <div class="form" id="form">
+    <label>Experiment No</label><input id="expNo" type="text">
+    <label>Subject name</label><textarea id="subject"></textarea>
+    <label>Subject code</label><input id="subjectCode" type="text">
+    <label>Experiment title (main center)</label><input id="expTitle" type="text">
+    <label>Instructed by</label><input id="instructor" type="text">
+    <label>Group</label><input id="group" type="text">
+    <label>Group members (one per line)</label><textarea id="members"></textarea>
+    <label>Name</label><textarea id="name"></textarea>
+    <label>Reg No</label><input id="regNo" type="text">
+    <label>Course</label>
+    <select id="course">
+      <option>HNDE EE</option><option>HNDE ME</option><option>HNDE BSE</option><option>HNDE CE</option>
+    </select>
+    <label>Date of Ins</label><input id="dateIns" type="date">
+    <label>Date of Sub</label><input id="dateSub" type="date">
+    <button class="btn" id="downloadPDF">Download PDF</button>
+    <button class="btn" id="downloadDOCX">Download DOCX</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.0.0/docx.min.js"></script>
+
+<script>
+const el = id => document.getElementById(id);
+
+/* Robust per-line underline rendering:
+   - Create spans that contain a word plus any trailing whitespace (so spaces stick to the measured span).
+   - Measure each span's first client rect and group by rounded top relative to container.
+   - Wrap grouped spans into .line elements that get the underline (border-bottom + padding-bottom).
+*/
+function renderTitleLines(forceRaw) {
+  const titleEl = el('centerTitle');
+  const raw = (forceRaw !== undefined ? forceRaw : titleEl.dataset.raw) || '';
+  titleEl.dataset.raw = raw;
+  titleEl.innerHTML = '';
+  if (!raw) return;
+
+  // Tokenize into word + following whitespace tokens
+  const tokens = raw.split(/(\s+)/);
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    if (token === undefined || token === '') continue;
+    if (/\s+/.test(token)) {
+      // leading spaces - add as text node
+      frag.appendChild(document.createTextNode(token));
+      continue;
+    }
+    // token is a word; attach its following space (if any)
+    let text = token;
+    if (i + 1 < tokens.length && /\s+/.test(tokens[i + 1])) {
+      text += tokens[i + 1];
+      i++;
+    }
+    const w = document.createElement('span');
+    w.className = 'word';
+    w.textContent = text;
+    frag.appendChild(w);
+  }
+  titleEl.appendChild(frag);
+
+  // measure container top for relative calculations
+  const containerRect = titleEl.getBoundingClientRect();
+
+  // Collect spans and their first client rect top (handles wrapped spans)
+  const wordEls = Array.from(titleEl.querySelectorAll('.word'));
+  if (wordEls.length === 0) return;
+
+  const items = wordEls.map(w => {
+    const rects = w.getClientRects();
+    const r = rects && rects.length ? rects[0] : w.getBoundingClientRect();
+    const top = Math.round(r.top - containerRect.top);
+    return { el: w, top };
+  });
+
+  // Group by top value (rounded) — allow small tolerance
+  const groups = [];
+  items.forEach(item => {
+    const last = groups[groups.length - 1];
+    if (!last || Math.abs(last.top - item.top) > 4) {
+      groups.push({ top: item.top, words: [item.el] });
+    } else {
+      last.words.push(item.el);
+    }
+  });
+
+  // Rebuild DOM with .line wrappers
+  titleEl.innerHTML = '';
+  groups.forEach((g, gi) => {
+    const line = document.createElement('span');
+    line.className = 'line';
+    g.words.forEach(w => line.appendChild(w));
+    titleEl.appendChild(line);
+    if (gi < groups.length - 1) titleEl.appendChild(document.createTextNode(' '));
+  });
+}
+
+function setCenterTitle(raw) {
+  const titleEl = el('centerTitle');
+  titleEl.dataset.raw = raw || '';
+  renderTitleLines();
+}
+
+function formatDateDDMMYYYY(iso){ if(!iso) return ''; const [y,m,d] = iso.split('-'); return `${d}/${m}/${y}`; }
+
+function updatePreview(){
+  el('topRightBlock').innerHTML =
+    `<table>
+      <tr><td>Experiment NO: ${el('expNo').value}</td></tr>
+      <tr><td>${el('subject').value}</td></tr>
+      <tr><td>${el('subjectCode').value}</td></tr>
+    </table>`;
+
+  setCenterTitle(el('expTitle').value);
+
+  const members = el('members').value.split(/\r?\n/).map(x => x.trim()).filter(Boolean).map(m => `<tr><td></td><td>${m}</td></tr>`).join('');
+  el('middleLeftBlock').innerHTML =
+    `<table>
+      <tr><td>INSTRUCTED BY</td><td>: ${el('instructor').value}</td></tr>
+      <tr><td>GROUP</td><td>: ${el('group').value}</td></tr>
+      <tr><td>GROUP MEMBERS</td><td>:</td></tr>
+      ${members}
+    </table>`;
+
+  el('bottomRightBlock').innerHTML =
+    `<table>
+      <tr><td>NAME</td><td>: ${el('name').value}</td></tr>
+      <tr><td>REG NO</td><td>: ${el('regNo').value}</td></tr>
+      <tr><td>COURSE</td><td>: ${el('course').value}</td></tr>
+      <tr><td>DATE OF INS</td><td>: ${formatDateDDMMYYYY(el('dateIns').value)}</td></tr>
+      <tr><td>DATE OF SUB</td><td>: ${formatDateDDMMYYYY(el('dateSub').value)}</td></tr>
+    </table>`;
+}
+
+// Live preview handlers
+document.querySelectorAll('#form input, #form textarea, #form select').forEach(inp => {
+  ['input','change','keyup'].forEach(ev => inp.addEventListener(ev, updatePreview));
+});
+updatePreview();
+
+// Re-render line wrapping on resize
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => renderTitleLines(), 80);
+});
+
+/*
+  PDF export:
+  - Add body.pdf-export to force desktop/A4 CSS
+  - Re-render per-line underlines after forcing A4 so line breaks match the exported layout.
+  - Measure pixel width/height and pass to html2canvas
+*/
+document.getElementById('downloadPDF').addEventListener('click', async () => {
+  updatePreview();
+  const pageEl = document.getElementById('pagePreview');
+
+  // Force desktop/A4 styles
+  document.body.classList.add('pdf-export');
+
+  // Wait a frame for styles to apply
+  await new Promise(requestAnimationFrame);
+
+  // Re-render title lines under A4 styles
+  renderTitleLines();
+
+  // Wait another frame for final layout
+  await new Promise(requestAnimationFrame);
+
+  const rect = pageEl.getBoundingClientRect();
+  const pxWidth = Math.ceil(rect.width);
+  const pxHeight = Math.ceil(rect.height);
+
+  const opt = {
+    margin: 0,
+    filename: 'cover_page.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: {
+      scale: 2,
+      width: pxWidth,
+      height: pxHeight,
+      windowWidth: pxWidth
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  try {
+    await html2pdf().set(opt).from(pageEl).save();
+  } catch (err) {
+    console.error('PDF generation failed:', err);
+    alert('PDF generation failed. See console for details.');
+  } finally {
+    // restore preview and re-render under normal responsive rules
+    document.body.classList.remove('pdf-export');
+    await new Promise(requestAnimationFrame);
+    renderTitleLines();
+  }
+});
+
+document.getElementById('downloadDOCX').addEventListener('click', async () => {
+  const doc = new docx.Document({
+    sections: [{ children: [ new docx.Paragraph({ text: document.getElementById('pageInner').innerText, spacing: { after: 200 } }) ] }]
+  });
+  docx.Packer.toBlob(doc).then(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'cover_page.docx';
+    a.click();
+  });
+});
+</script>
+</body>
+</html>
